@@ -1,17 +1,17 @@
 from __future__ import unicode_literals
 import sqlite3
 import os
-import jdatetime
+import hashlib
 
 # -*- coding: utf-8 -*-
 PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 
-db_name = os.path.join(PROJECT_ROOT, 'pic2text')
+db_name = os.path.join(PROJECT_ROOT, 'pic2text_db')
 
 
 # setting
 
-def create_database(db_name=db_name):
+def create_database():
     conn = sqlite3.connect(db_name)
     cursor = conn.cursor()
     cursor.execute('''CREATE TABLE IF NOT EXISTS Users (
@@ -32,6 +32,23 @@ def create_database(db_name=db_name):
                       dst_file text NOT NULL UNIQUE,
                       FOREIGN KEY (user_id) REFERENCES Users(user_id)
                     );''')
+    conn.close()
+
+
+def hash_pass(password):
+    salt = "salt :D"
+    password = password + salt
+    hashed = hashlib.md5(password.encode())
+    return hashed.hexdigest()
+
+
+def add_user(first_name, last_name, username, password):
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    password = hash_pass(password)
+    cursor.execute(" INSERT INTO Users (first_name, last_name, username, password) \
+                    VALUES ('{}','{}','{}','{}') ".format(first_name, last_name, username, password))
+    conn.commit()
     conn.close()
 
 # def make_new_elec(start_date, finish_date):
