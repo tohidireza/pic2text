@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="fa-ir" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta charset="UTF-8">
+  <title>تبدیل عکس به متن و PDF به Word فارسی : pic2text</title>
+  <meta name="description" content="پیک تو تکست نرم افزار تحت وب برای تبدیل عکس به متن و PDF به Word فارسی می باشد که با استفاده از الگوریتم های پیچیده یادگیری ماشین، بهترین و دقیق ترین تبدیل عکس به متن فارسی یا پی دی اف به ورد را انجام می دهد.">
+  <meta name="keywords" content="تبدیل عکس به متن , تبدیل PDF به Word , پردازش عکس , عکس به متن فارسی , پی دی اف به ورد , تشخیص متن , ocr فارسی">
+  <meta property="og:title" content="تبدیل عکس به متن و PDF به Word فارسی : pic2text">
+  <meta property="og:description"
+    content="پیک تو تکست نرم افزار تحت وب برای تبدیل عکس به متن و PDF به Word فارسی می باشد که با استفاده از الگوریتم های پیچیده یادگیری ماشین، بهترین و دقیق ترین تبدیل عکس به متن فارسی یا پی دی اف به ورد را انجام می دهد.">
+  <link rel="stylesheet" type="text/css" href = "{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <meta name="csrf-token" content="txjnZ6XhYtDZhxO4APrOfwVhSf08mCHHzYbdLP53">
+  <link rel="shortcut icon" type="image/png"  href = "{{ url_for('static', filename='img/logo.png') }}" />
+  <link rel="icon" type="image/png" sizes="128x128" href = "{{ url_for('static', filename='img/logo.png') }}">
+  <meta name="msapplication-TileImage" content="img/logo.png">
+  <link rel="apple-touch-icon-precomposed" sizes="128x128" href = "{{ url_for('static', filename='img/logo.png') }}">
+  <meta name="theme-color" content="#0075ff">
+  <meta name="csrf-token" content="txjnZ6XhYtDZhxO4APrOfwVhSf08mCHHzYbdLP53">
+  <link rel="stylesheet" href = "{{ url_for('static', filename='css/all.css') }}" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href = "{{ url_for('static', filename='css/font-awesome.min.css') }}">
+
+
+</head>
+
+<body>
+
+  <div class="modal authentication-modal" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+          <div class="title">ورود به pic2text</div>
+
+
+
+
+
+          <form method="POST" action="" accept-charset="UTF-8"><input name="_token" type="hidden" value="txjnZ6XhYtDZhxO4APrOfwVhSf08mCHHzYbdLP53">
+
+            <div class="form-group">
+              <input class="ghost-input" type="text" name="email" placeholder="آدرس ایمیل">
+            </div>
+
+            <div class="form-group">
+              <input class="ghost-input" type="password" name="password" placeholder="کلمه عبور">
+            </div>
+
+            <button type="submit" class="btn btn-info shadowed btn-block authentication-btn">ورود به سایت</button>
+
+          </form>
+
+          <div class="actions"><span>کلمه عبور خود را فراموش کرده اید؟</span> <a href="#">بازیابی کلمه عبور</a> </div>
+          <div class="actions"><span>هنوز عضو پیک تو تکست نشده اید ؟</span> <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#registerModal">عضویت در سایت</a> </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal authentication-modal" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+          <div class="title">عضویت در pic2text</div>
+
+
+
+
+
+          <form method="POST" action="" accept-charset="UTF-8"><input name="_token" type="hidden" value="txjnZ6XhYtDZhxO4APrOfwVhSf08mCHHzYbdLP53">
+
+            <div class="form-group clearfix">
+              <div class="ghost-input-group">
+                <input type="text" name="first_name" class="ghost-input" placeholder="نام" aria-describedby="basic-addon2">
+                <input type="text" name="last_name" class="ghost-input" placeholder="نام خانوادگی" aria-describedby="basic-addon2">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <input class="ghost-input" name="email" type="text" placeholder="آدرس ایمیل">
+            </div>
+
+            <div class="form-group">
+              <input class="ghost-input" name="password" type="password" placeholder="کلمه عبور">
+            </div>
+
+            <button type="submit" class="btn btn-info shadowed btn-block authentication-btn">ایجاد حساب کاربری</button>
+
+          </form>
+
+          <div class="actions"><span>عضو پیک تو تکست هستید ؟</span> <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#loginModal">ورود به حساب کاربری</a> </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal special-account-alert-modal" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+          <div class="title">تماس با ما</div>
+
+          <div class="special-account-description text-center ltr">
+            <div class="text-center">آدرس ایمیل</div>
+            <div class="text-center">info@pic2text.com</div>
+            <hr>
+            <div class="text-center">پشتیبانی تلگرام</div>
+            <div class="text-center">@pic2text_bot</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="app">
+    <div class="main-wrapper">
+
+      <header class="docs-nav navbar navbar-static-top" id="top">
+        <div class="container">
+          <div class="navbar-header">
+            <button aria-controls="bs-navbar" aria-expanded="false" class="collapsed navbar-toggle" data-target="#bs-navbar" data-toggle="collapse" type="button">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+              <img src="static/img/logo.png">
+              <div class="name">
+                <div class="en">pic2text</div>
+                <div class="slogan">نرم افزار پردازش عکس</div>
+              </div>
+            </a>
+          </div>
+          <nav class="collapse navbar-collapse" id="bs-navbar">
+
+            <ul class="nav navbar-nav navbar-right">
+              <li> <a href="#" class="button login" data-target="#loginModal" data-toggle="modal">ورود</a></li>
+              <li> <a href="#" class="button register" data-target="#registerModal" data-toggle="modal">عضویت</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right nav-menu">
+              <li><a href="#help">راهنما</a></li>
+              <li><a href="#" data-target="#contactModal" data-toggle="modal">تماس با ما</a></li>
+              <li><a href="#prices"> تعرفه ها </a></li>
+
+            </ul>
+
+
+          </nav>
+        </div>
+      </header>
+
+      <div class="wrapper">
+
+        <ocr-converter-component inline-template>
+          <section class="ocr">
+
+            <div class="modal special-account-alert-modal" id="specialAccountAlertModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                    <div class="title">افزایش اعتبار </div>
+
+                    <div class="special-account-description">کاربر گرامی ، میزان اعتبار شما برای تبدیل صفحات فایل کافی نیست. برای تبدیل فایل ، اعتبار حساب کاربری خود را بر اساس پکیج های پیشنهادی افزایش دهید سپس مجدداً نسبت به تبدیل فایل اقدام نمایید.
+                    </div>
+                    <hr>
+
+                    <a href="#" data-toggle="modal" data-target="#registerModal" data-dismiss="modal" class="btn btn-primary">افزایش اعتبار حساب کاربری</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal pricing-modal" id="pricingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-body">
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                    <div class="title">تعرفه پکیج های حساب کاربری ویژه</div>
+
+                    <section class="pricing clearfix">
+
+                      <ul class="pricing-packages">
+
+                        <li class="big red">
+
+                          <div class="price">
+                            <span class="amount">۱۰,۰۰۰</span>
+                            <span class="unit">تومان</span>
+                          </div>
+                          <div class="giving">
+                            <span class="clicks">تبدیل ۱۵ عکس</span>
+                            <span class="impression">هر صفحه pdf یک عکس</span>
+                          </div>
+                          <div class="extras">
+                            <span>* دریافت فایل متنی text</span>
+                            <span>* دریافت فایل word</span>
+                          </div>
+                          <a href="#" data-target="#loginModal" data-toggle="modal" class="go">خرید پکیج و ارتقاء به حساب ویژه</a>
+                        </li>
+
+                        <li class="big green">
+                          <span class="gift"><strong>۱۵٪</strong> شارژ بیشتر</span>
+                          <div class="price">
+                            <span class="amount">۲۰,۰۰۰</span>
+                            <span class="unit">تومان</span>
+                          </div>
+                          <div class="giving">
+                            <span class="clicks">تبدیل ۳۵ عکس</span>
+                            <span class="impression">هر صفحه pdf یک عکس</span>
+                          </div>
+                          <div class="extras">
+                            <span>* دریافت فایل متنی text</span>
+                            <span>* دریافت فایل word</span>
+                          </div>
+                          <a href="#" data-target="#loginModal" data-toggle="modal" class="go">خرید پکیج و ارتقاء به حساب ویژه</a>
+                        </li>
+
+                        <li class="big violet">
+                          <span class="gift"><strong>۲۵٪</strong> شارژ بیشتر</span>
+                          <div class="price">
+                            <span class="amount">۴۰,۰۰۰</span>
+                            <span class="unit">تومان</span>
+                          </div>
+                          <div class="giving">
+                            <span class="clicks">تبدیل ۸۰ عکس</span>
+                            <span class="impression">هر صفحه pdf یک عکس</span>
+                          </div>
+                          <div class="extras">
+                            <span>* دریافت فایل متنی text</span>
+                            <span>* دریافت فایل word</span>
+                          </div>
+                          <a href="#" data-target="#loginModal" data-toggle="modal" class="go">خرید پکیج و ارتقاء به حساب ویژه</a>
+                        </li>
+
+                      </ul>
+                    </section>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="container">
+              <h1 class="page-title">تبدیل عکس به متن و PDF به word</h1>
+
+              <div class="converter" style="display: none" v-show="true">
+
+                <div class="step-1 step">
+                  <div class="step-title">گام اول : بارگذاری فایل PDF یا عکس</div>
+                  <div class="step-body" :class="{ 'disabled': step != 1, 'btn-play-pulse': step == 1 }" data-toggle="modal" data-target="#registerModal">
+
+                    <div class="step-wrapper">
+
+                      <div class="upload">
+
+                        <input type="file" class="ghost-file" ref="ghostFileInput">
+
+                        <div class="loading-absolute" style="display: none" v-show="uploading"><span class="fa fa-spin"></span></div>
+
+
+                        <i class="fa fa-upload"></i>
+                        <div class="upload-description">
+                          <div>فرمت های مناسب</div>
+                          <div> PDF - JPG - PNG - BMP</div>
+                        </div>
+
+                        <button class="btn btn-primary">انتخاب فایل</button>
+
+                      </div>
+
+                    </div>
+                    <span v-if="step == 1" class="btn-play-pulse-sm"></span>
+                    <span v-if="step == 1" class="btn-play-pulse-lg"></span>
+                  </div>
+                </div>
+
+                <div class="step-seprator" :class="{ 'disabled': step != 2}">
+                  <div class="dash"></div>
+                </div>
+
+                <div class="step-1 step">
+                  <div class="step-title">گام دوم : تحلیل و پردازش فایل</div>
+                  <div class="step-body" :class="{ 'disabled': step != 2, 'btn-play-pulse': step == 2 }">
+                    <div class="step-wrapper">
+                      <img class="small" v-if="step == 2" src="static/img/proccessing.gif">
+                      <img v-else src="static/img/proccessing.png">
+
+                      <div class="processing-loading" v-if="total_pages == 0" ref="processingLoading">
+                        <i class="fa fa-cog fa-spin fa-lg"></i>
+                        <span>در حال پردازش فایل...</span>
+                      </div>
+
+                      <div class="progress-pdf text-center" v-if="total_pages > 0 && step == 2">
+                        <span class="percentage">
+                          <i class="fa fa-cog fa-lg fa-spin"></i>
+                          <span> درحال پردازش صفحه {{ current_page }} از {{ total_pages }} </span>
+                        </span>
+                        <div class="progress" dir="rtl">
+                          <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" v-bind:style="{ width: (current_page/total_pages)*100 + '%' }">
+
+                        </div>
+                      </div>
+
+                    </div>
+                    <span v-if="step == 2" class="btn-play-pulse-sm"></span>
+                    <span v-if="step == 2" class="btn-play-pulse-lg"></span>
+                  </div>
+                </div>
+
+                <div class="step-seprator" :class="{ 'disabled': step != 3}">
+                  <div class="dash"></div>
+                </div>
+
+                <div class="step-1 step">
+                  <div class="step-title">گام سوم : دریافت فایل word یا متن</div>
+                  <div class="step-body" :class="{ 'disabled': step != 3, 'btn-play-pulse': step == 3 }">
+                    <div class="step-wrapper">
+                      <div class="download">
+
+                        <i class="fa fa-download"></i>
+                        <div class="download-description">نسخه مورد نظر فایل تبدیل شده را دریافت نمایید.</div>
+
+                        <button @click="downloadWord" class="btn btn-primary btn-word">دریافت word</button>
+                        <button @click="downloadText" class="btn btn-primary btn-txt">دریافت text</button>
+
+                        <a class="register" href="#" data-toggle="modal" data-target="#pricingModal">افزایش میزان اعتبار حساب کاربری</a>
+
+                      </div>
+                    </div>
+                    <span v-if="step == 3" class="btn-play-pulse-sm"></span>
+                    <span v-if="step == 3" class="btn-play-pulse-lg"></span>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="text-center">
+                <button class="btn btn-default btn-restart" style="display: none" v-show="true" v-if="step == 3" @click="restartOcr()">شروع مجدد و انتخاب فایل جدید</button>
+              </div>
+
+            </div>
+
+          </section>
+        </ocr-converter-component>
+
+        <section class="img-introduction introduction">
+
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-10 col-sm-offset-1">
+                <h1 class="section-title">تبدیل عکس به متن</h1>
+                <div class="section-slogan">عکس با پس زمینه سفید بارگذاری نمایید و متن تایپ شده داخل عکس را تحویل بگیرید!</div>
+                <div class="section-description">پیک تو تکست (pic2text) نرم افزاری تحت وب برای تبدیل عکس به متن و PDF به Word‌ می باشد. این نرم افزار که به عنوان پردازشگر عکس یا OCR فارسی شناخته می شود با بهره گیری از الگوریتم های پیچیده یادگیری
+                  ماشین و هوش مصنوعی عکس دریافتی را تحلیل و متن را از آن استخراج می نماید. نرم افزار آنلاین تبدیل عکس به متن فارسی به صورت تحت وب بوده و نیازی به نصب ندارد و تنها با مراجعه به وبسایت و بدون هیچ ابزار اضافی دیگری عکس خود را به متن
+                  تبدیل نمایید. همچنین این نرم افزار امکان تبدیل آنلاین عکس به متن انگلیسی را نیز دارا می باشد. برای تبدیل عکس به متن کافی است فایل عکس خود را در فرمت های JPG، PNG یا BMP در نرم افزار بارگذاری کرده و فایل متنی را دریافت نمایید. برای
+                  تبدیل کامل عکس به متن ابتدا وارد حساب کاربری خود شده سپس حساب کاربری خود را بر اساس پکیج های پیشنهادی و مطابق با نیاز خود، به نسخه ویژه ارتقاء دهید.</div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="pdf-introduction introduction">
+
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-10 col-sm-offset-1">
+                <h1 class="section-title">تبدیل پی دی اف به ورد</h1>
+                <div class="section-slogan">بهترین ابزار برای تبدیل PDF به Word ، تنها کافی است فایل PDF را بارگذاری نمایید!</div>
+                <div class="section-description"> پیک تو تکست (pic2text) دقیق ترین ابزار برای تبدیل PDF به Word می باشد. برای تبدیل پی دی اف به ورد کافی است فایل PDF مورد نظر خود را در سایت بارگذاری نمایید. نرم افزار pic2text با استفاده از الگوریتم
+                  های پیجیده یادگیری ماشین و تحلیل ابر داده با بررسی صفحات فایل PDF، متن هر صفحه از PDF را استخراج کرده و آن را به Word تبدیل می کند. میزان اعتبار اولیه شما پس از عضویت برای تبدیل PDF به Word ۳ می باشد لذا برای دریافت متن کامل تایپ
+                  شده فایل Word، ابتدا وارد حساب کاربری خود شده سپس حساب کاربری را بر اساس پکیج های پیشنهادی به نسخه ویژه ارتقاء دهید. برای حمایت از نرم فزار تبدیل PDF به Word و عکس به متن پیک تو تکست (pic2text) ما را به دوستان خود معرفی نمایید.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="pricing clearfix" id="prices">
+
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-10 col-sm-offset-1">
+                <h1 class="section-title">حساب کاربری ویژه</h1>
+                <div class="section-slogan">حساب کاربری خود را ایجاد کرده، به نسخه ویژه ارتقاء دهید، عکس یا PDF را به طور کامل به متن تبدیل نمایید!</div>
+                <div class="section-description">با عضویت در نرم افزار تحت وب pic2text شما می توانید ۳ صفحه را به صورت آزمایشی از عکس به متن یا PDF به Word تبدیل نمایید. برای تبدیل کامل عکس به متن یا پی دی اف به ورد، حساب کاربری خود را ایجاد نموده
+                  سپس بر اساس پکیج های پیشنهادی زیر و متناسب با نیاز خود، حساب کاربری خود را به نسخه ویژه ارتقاء ‌دهید.</div>
+              </div>
+
+              <ul class="pricing-packages">
+
+                <li class="big red">
+
+                  <div class="price">
+                    <span class="amount">۱۰,۰۰۰</span>
+                    <span class="unit">تومان</span>
+                  </div>
+                  <div class="giving">
+                    <span class="clicks">تبدیل ۱۵ عکس</span>
+                    <span class="impression">هر صفحه pdf یک عکس</span>
+                  </div>
+                  <div class="extras">
+                    <span>* دریافت فایل متنی text</span>
+                    <span>* دریافت فایل word</span>
+                  </div>
+                  <a href="#" data-target="#loginModal" data-toggle="modal" class="go">خرید پکیج و ارتقاء به حساب ویژه</a>
+                </li>
+
+                <li class="big green">
+                  <span class="gift"><strong>۱۵٪</strong> شارژ بیشتر</span>
+                  <div class="price">
+                    <span class="amount">۲۰,۰۰۰</span>
+                    <span class="unit">تومان</span>
+                  </div>
+                  <div class="giving">
+                    <span class="clicks">تبدیل ۳۵ عکس</span>
+                    <span class="impression">هر صفحه pdf یک عکس</span>
+                  </div>
+                  <div class="extras">
+                    <span>* دریافت فایل متنی text</span>
+                    <span>* دریافت فایل word</span>
+                  </div>
+                  <a href="#" data-target="#loginModal" data-toggle="modal" class="go">خرید پکیج و ارتقاء به حساب ویژه</a>
+                </li>
+
+                <li class="big violet">
+                  <span class="gift"><strong>۲۵٪</strong> شارژ بیشتر</span>
+                  <div class="price">
+                    <span class="amount">۴۰,۰۰۰</span>
+                    <span class="unit">تومان</span>
+                  </div>
+                  <div class="giving">
+                    <span class="clicks">تبدیل ۸۰ عکس</span>
+                    <span class="impression">هر صفحه pdf یک عکس</span>
+                  </div>
+                  <div class="extras">
+                    <span>* دریافت فایل متنی text</span>
+                    <span>* دریافت فایل word</span>
+                  </div>
+                  <a href="#" data-target="#loginModal" data-toggle="modal" class="go">خرید پکیج و ارتقاء به حساب ویژه</a>
+                </li>
+
+              </ul>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="help" id="help">
+
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-10 col-sm-offset-1">
+                <h1 class="section-title">انتخاب عکس مناسب</h1>
+                <div class="section-slogan">عکس های با پس زمینه سفید، بدون سایه، با کیفیت مناسب و بدون زاویه بهترین هستند!</div>
+                <div class="section-description">برای دریافت بهرین نتیجه از تبدیل عکس به متن پیشنهاد می شود عکس های انتخابی دارای کیفیت مناسب بوده و حتما دارای پس زمینه سفید رنگ باشد. عکس می بایست مستقیم و بدون زاویه بوده و سایه روی آن ها نباشد. در
+                  تصاویر زیر نمونه هایی از الگوها مناسب و نا مناسب در انتخاب عکس برای تبدیل به متن آورده شده است.</div>
+
+                <div class="help-item-container clearfix">
+
+                  <div class="help-item green">
+                    <div class="item">
+                      <div class="title">
+                        <i class="fa fa-check-circle"></i>
+                        <span>الگوی درست</span>
+                      </div>
+                      <div class="image">
+                        <img src="static/img/1.jpg" alt="الگوی مناسب 1">
+                      </div>
+                      <div class="description">تصویر شفاف، پس زمینه سفید، بدون زاویه و حاشیه</div>
+                    </div>
+                  </div>
+
+                  <div class="help-item green">
+                    <div class="item">
+                      <div class="title">
+                        <i class="fa fa-check-circle"></i>
+                        <span>الگوی درست</span>
+                      </div>
+                      <div class="image">
+                        <img src="static/img/8.jpg" alt="الگوی مناسب 2">
+                      </div>
+                      <div class="description">متن انگلیسی واضح، بدون زاویه و حاشیه</div>
+                    </div>
+                  </div>
+
+                  <div class="help-item green">
+                    <div class="item">
+                      <div class="title">
+                        <i class="fa fa-check-circle"></i>
+                        <span>الگوی درست</span>
+                      </div>
+                      <div class="image">
+                        <img src="static/img/6.jpg" alt="الگوی مناسب 3">
+                      </div>
+                      <div class="description">متن نیمه شفاف ، اندکی زاویه و حاشیه</div>
+                    </div>
+                  </div>
+
+                  <div class="help-item green">
+                    <div class="item">
+                      <div class="title">
+                        <i class="fa fa-check-circle"></i>
+                        <span>الگوی درست</span>
+                      </div>
+                      <div class="image">
+                        <img src="static/img/4.jpg" alt="الگوی مناسب 4">
+                      </div>
+                      <div class="description">متن نیمه شفاف ، بدون زاویه و حاشیه و پس زمینه سفید</div>
+                    </div>
+                  </div>
+
+                  <div class="help-item red">
+                    <div class="item">
+                      <div class="title">
+                        <i class="fa fa-times-circle"></i>
+                        <span>الگوی نادرست</span>
+                      </div>
+                      <div class="image">
+                        <img src="static/img/2.jpg" alt="الگوی نا مناسب 1">
+                      </div>
+                      <div class="description">زاویه زیاد به همراه حاشیه و المان های اضافه</div>
+                    </div>
+                  </div>
+
+                  <div class="help-item red">
+                    <div class="item">
+                      <div class="title">
+                        <i class="fa fa-times-circle"></i>
+                        <span>الگوی نادرست</span>
+                      </div>
+                      <div class="image">
+                        <img src="static/img/3.jpg" alt="الگوی نا مناسب 2">
+                      </div>
+                      <div class="description">متن دست نویس برای نرم افزار غیر قابل تشخیص است</div>
+                    </div>
+                  </div>
+
+                  <div class="help-item red">
+                    <div class="item">
+                      <div class="title">
+                        <i class="fa fa-times-circle"></i>
+                        <span>الگوی نادرست</span>
+                      </div>
+                      <div class="image">
+                        <img src="static/img/5.png" alt="الگوی نا مناسب 3">
+                      </div>
+                      <div class="description">تنها پس زمینه سفید قابل تشخیص است</div>
+                    </div>
+                  </div>
+
+                  <div class="help-item red">
+                    <div class="item">
+                      <div class="title">
+                        <i class="fa fa-times-circle"></i>
+                        <span>الگوی نادرست</span>
+                      </div>
+                      <div class="image">
+                        <img src="static/img/7.jpg" alt="الگوی نا مناسب 4">
+                      </div>
+                      <div class="description">تصویر با حاشیه های محو و رنگ تیره با زاویه زیاد</div>
+                    </div>
+                  </div>
+
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+      </div>
+
+      <footer class="footer">
+
+        <div class="container text-center">
+
+          <div class="socials">
+            <a target="_blank" href="#"><i class="fa fa-telegram fa-2x"></i> </a>
+            <a target="_blank" href="#"><i class="fa fa-instagram fa-2x"></i> </a>
+            <a href="#"><i class="fa fa-linkedin-square fa-2x"></i> </a>
+            <a href="#"><i class="fa fa-facebook-square fa-2x"></i> </a>
+          </div>
+
+          <div class="developed">
+
+
+
+            <span>کلیه حقوق مادی و معنوی این نرم افزار در اختیار pic2text می باشد.</span>
+          </div>
+
+
+        </div>
+
+      </footer>
+    </div>
+  </div>
+
+  <script src="static/js/pic2text.min.js"></script>
+  <script>
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    $(document).ready(function() {
+
+      $("a").on('click', function(event) {
+        if (this.hash !== "") {
+          event.preventDefault();
+          var hash = this.hash;
+          $('html, body').animate({
+            scrollTop: $(hash).offset().top
+          }, 800, function() {
+
+            window.location.hash = hash;
+          });
+        }
+      });
+
+
+
+
+
+    });
+  </script>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-40760267-6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-40760267-6');
+  </script>
+
+
+</body>
+
+</html>
