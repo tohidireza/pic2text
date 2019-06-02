@@ -1,22 +1,83 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from flask import Flask, render_template
+from flask import Flask, render_template, flash
 from flask import redirect
 from flask import request
 from flask import url_for
 from model import *
+import inspect
 import jdatetime
-
-
+from flask_login import LoginManager, UserMixin, login_required, \
+    login_user, logout_user, current_user
 
 app = Flask(__name__)
+app.config.update(
+    SECRET_KEY="python_class"
+)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+
+
+class User(UserMixin):
+    def __init__(self, id):
+        self.id = id
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User(user_id)
+
+
 error = ''
-# bootstrap = Bootstrap(app)
+
 
 @app.route('/', methods=["POST", "GET"])
 def index():
+    # if request.method=="POST":
+    #     print('*****************')
+    #     print(request.get_json())
     return render_template("index.html")
 
+@app.route('/signup', methods=["POST", "GET"])
+def signup():
+    if request.method=="POST":
+        print('*******  {}  ********'.format(inspect.stack()[0][3]))
+        form = request.form
+        first_name, last_name, email, password = form.get('first_name'), form.get('last_name'), form.get('email'), form.get('password')
+        # TODO validate inputs
+        if first_name and last_name and email and password:
+            add_user(first_name, last_name, email, password)
+            # TODO Check the uniqueness of the email
+    return render_template("dashboard.html")
+
+@app.route('/signin', methods=["POST", "GET"])
+def signin():
+    if request.method=="POST":
+        print('*******  {}  ********'.format(inspect.stack()[0][3]))
+        form = request.form
+        email, password = form.get('email'), form.get('password')
+        # TODO validate inputs
+        if email and password:
+            if authenticate_user(email, password):
+                user = User(get_user_id(email, password))
+                login_user(user)
+                return render_template("dashboard.html")
+            # TODO else
+    return render_template("index.html")
+
+
+
+@app.route('/dashboard', methods=["POST", "GET"])
+@login_required
+def dashboard():
+    print('*******  {}  ********'.format(inspect.stack()[0][3]))
+    if request.method=="POST":
+        print('*******  {}  ********'.format(inspect.stack()[0][3]))
+        form = request.form
+
+    return render_template("index.html")
 # @app.route('/admin/newElec', methods=["POST", "GET"])
 # def admin_newElec():
 #     if request.method == "POST":
@@ -124,10 +185,6 @@ def index():
 #
 #
 #
-
-
-
-
 
 
 if __name__ == "__main__":

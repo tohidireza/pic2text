@@ -18,8 +18,9 @@ def create_database():
                       user_id INTEGER PRIMARY KEY AUTOINCREMENT,
                       first_name text NOT NULL,
                       last_name text NOT NULL,
-                      username text NOT NULL UNIQUE,
-                      password text
+                      email text NOT NULL UNIQUE,
+                      password text,
+                      is_deleted varchar(1) not NULL  DEFAULT '0'
                     ); ''')
 
     cursor.execute('''CREATE TABLE IF NOT EXISTS History (
@@ -30,6 +31,7 @@ def create_database():
                       status text NOT NULL,
                       src_file text NOT NULL UNIQUE,
                       dst_file text NOT NULL UNIQUE,
+                      is_deleted varchar(1) not NULL  DEFAULT '0',
                       FOREIGN KEY (user_id) REFERENCES Users(user_id)
                     );''')
     conn.close()
@@ -42,14 +44,35 @@ def hash_pass(password):
     return hashed.hexdigest()
 
 
-def add_user(first_name, last_name, username, password):
+def add_user(first_name, last_name, email, password):
     conn = sqlite3.connect(db_name)
     cursor = conn.cursor()
     password = hash_pass(password)
-    cursor.execute(" INSERT INTO Users (first_name, last_name, username, password) \
-                    VALUES ('{}','{}','{}','{}') ".format(first_name, last_name, username, password))
+    cursor.execute(" INSERT INTO Users (first_name, last_name, email, password) \
+                    VALUES ('{}','{}','{}','{}') ".format(first_name, last_name, email, password))
     conn.commit()
     conn.close()
+
+
+def authenticate_user(email, password):
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    cursor.execute("select * from Users where \
+                        email='%s' and password='%s' and is_deleted=0 ;" % \
+                   (email, hash_pass(password)))
+
+    user = cursor.fetchall()
+    return len(user) != 0
+
+def get_user_id(email, password):
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    cursor.execute("select user_id from Users where \
+                        email='%s' and password='%s' and is_deleted=0 ;" % \
+                   (email, hash_pass(password)))
+
+    user_id = cursor.fetchall()
+    return user_id
 
 # def make_new_elec(start_date, finish_date):
 #     conn = sqlite3.connect(db_name)
