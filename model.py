@@ -71,9 +71,17 @@ def get_user_id(email, password):
                         email='%s' and password='%s' and is_deleted=0 ;" % \
                    (email, hash_pass(password)))
 
-    user_id = cursor.fetchall()
+    user_id = cursor.fetchall()[0][0]
     return user_id
 
+def get_user_by_id(id):
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    cursor.execute("select first_name,last_name,email from Users where \
+                        user_id='%s' and is_deleted=0 ;" % \
+                   (id))
+    user = cursor.fetchall()[0]
+    return dict(zip(['first_name','last_name','email'], user))
 # def make_new_elec(start_date, finish_date):
 #     conn = sqlite3.connect(db_name)
 #     cursor = conn.cursor()

@@ -6,7 +6,6 @@ from flask import request
 from flask import url_for
 from model import *
 import inspect
-import jdatetime
 from flask_login import LoginManager, UserMixin, login_required, \
     login_user, logout_user, current_user
 
@@ -14,10 +13,11 @@ app = Flask(__name__)
 app.config.update(
     SECRET_KEY="python_class"
 )
+app.config['TESTING'] = False
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "login"
+login_manager.login_view = "signin"
 
 
 class User(UserMixin):
@@ -35,9 +35,8 @@ error = ''
 
 @app.route('/', methods=["POST", "GET"])
 def index():
-    # if request.method=="POST":
-    #     print('*****************')
-    #     print(request.get_json())
+    if current_user.is_authenticated:
+        return redirect(url_for('.dashboard'))
     return render_template("index.html")
 
 @app.route('/signup', methods=["POST", "GET"])
@@ -50,7 +49,12 @@ def signup():
         if first_name and last_name and email and password:
             add_user(first_name, last_name, email, password)
             # TODO Check the uniqueness of the email
-    return render_template("dashboard.html")
+            id = get_user_id(email, password)
+            user = User(id)
+            login_user(user)
+            return redirect(url_for('.dashboard'))
+
+    return redirect('/')
 
 @app.route('/signin', methods=["POST", "GET"])
 def signin():
@@ -61,23 +65,35 @@ def signin():
         # TODO validate inputs
         if email and password:
             if authenticate_user(email, password):
-                user = User(get_user_id(email, password))
+                id = get_user_id(email, password)
+                user = User(id)
                 login_user(user)
-                return render_template("dashboard.html")
+                return redirect(url_for('.dashboard'))
             # TODO else
-    return render_template("index.html")
+    return redirect("/")
 
+@app.route('/signout', methods=["POST", "GET"])
+def signout():
+    if request.method=="POST":
+        logout_user()
+        return redirect("/")
+    return redirect("/")
 
 
 @app.route('/dashboard', methods=["POST", "GET"])
 @login_required
-def dashboard():
+def dashboard(user=''):
     print('*******  {}  ********'.format(inspect.stack()[0][3]))
     if request.method=="POST":
-        print('*******  {}  ********'.format(inspect.stack()[0][3]))
         form = request.form
 
-    return render_template("index.html")
+    if request.method=="GET":
+        id = current_user.id
+        user = get_user_by_id(id)
+
+    return render_template("dashboard.html", user=user)
+
+
 # @app.route('/admin/newElec', methods=["POST", "GET"])
 # def admin_newElec():
 #     if request.method == "POST":

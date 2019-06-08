@@ -22,7 +22,6 @@
 
 
 </head>
-
 <body>
 
 
@@ -86,7 +85,7 @@
               <span class="icon-bar"></span>
             </button>
             <a href="/" class="navbar-brand">
-              <img src="img/logo.png">
+              <img src="static/img/logo.png">
               <div class="name">
                 <div class="en">pic2text</div>
                 <div class="slogan">نرم افزار پردازش عکس</div>
@@ -99,11 +98,11 @@
               <li class="dropdown profile-dropdown">
                 <a href="#" class="user-profile clearfix" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <div class="image">
-                    <img src="img/avatar.svg">
+                    <img src="static/img/avatar.svg">
                   </div>
                   <div class="info">
-                    <div class="username">آزاده علیزاده</div>
-                    <div class="account">میزان اعتبار: 2 صفحه</div>
+                    <div class="username">{{user.first_name}} {{user.last_name}}</div>
+<!--                    <div class="account">میزان اعتبار: 2 صفحه</div>-->
                   </div>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dLabel">
@@ -118,7 +117,7 @@
                       <i class="fa fa-power-off fa-lg"></i>
                       <span>خروج</span>
                     </a>
-                    <form id="logout-form" action="" method="POST" style="display: none;"><input type="hidden" name="_token" value="txjnZ6XhYtDZhxO4APrOfwVhSf08mCHHzYbdLP53"></form>
+                    <form id="logout-form" action="{{url_for('signout')}}" method="POST" style="display: none;"><input type="hidden" name="_token" value="txjnZ6XhYtDZhxO4APrOfwVhSf08mCHHzYbdLP53"></form>
                   </li>
                 </ul>
               </li>
@@ -273,8 +272,8 @@
                   <div class="step-title">گام دوم : تحلیل و پردازش فایل</div>
                   <div class="step-body" :class="{ 'disabled': step != 2, 'btn-play-pulse': step == 2 }">
                     <div class="step-wrapper">
-                      <img class="small" v-if="step == 2" src="img/proccessing.gif">
-                      <img v-else src="img/proccessing.png">
+                      <img class="small" v-if="step == 2" src="static/img/proccessing.gif">
+                      <img v-else src="static/img/proccessing.png">
 
                       <div class="processing-loading" v-if="total_pages == 0" ref="processingLoading">
                         <i class="fa fa-cog fa-spin fa-lg"></i>
@@ -287,8 +286,8 @@
                           <span> درحال پردازش صفحه {{ current_page }} از {{ total_pages }} </span>
                         </span>
                         <div class="progress" dir="rtl">
-                          <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" v-bind:style="{ width: (current_page/total_pages)*100 + '%' }">
-                            {{ _.round((current_page/total_pages)*100) }}%</div>
+                          <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" >
+                            %</div>
                         </div>
                       </div>
 
@@ -457,7 +456,7 @@
                         <span>الگوی درست</span>
                       </div>
                       <div class="image">
-                        <img src="img/1.jpg" alt="الگوی مناسب 1">
+                        <img src="static/img/1.jpg" alt="الگوی مناسب 1">
                       </div>
                       <div class="description">تصویر شفاف، پس زمینه سفید، بدون زاویه و حاشیه</div>
                     </div>
@@ -470,7 +469,7 @@
                         <span>الگوی درست</span>
                       </div>
                       <div class="image">
-                        <img src="img/8.jpg" alt="الگوی مناسب 2">
+                        <img src="static/img/8.jpg" alt="الگوی مناسب 2">
                       </div>
                       <div class="description">متن انگلیسی واضح، بدون زاویه و حاشیه</div>
                     </div>
@@ -483,7 +482,7 @@
                         <span>الگوی درست</span>
                       </div>
                       <div class="image">
-                        <img src="img/6.jpg" alt="الگوی مناسب 3">
+                        <img src="static/img/6.jpg" alt="الگوی مناسب 3">
                       </div>
                       <div class="description">متن نیمه شفاف ، اندکی زاویه و حاشیه</div>
                     </div>
@@ -496,7 +495,7 @@
                         <span>الگوی درست</span>
                       </div>
                       <div class="image">
-                        <img src="img/4.jpg" alt="الگوی مناسب 4">
+                        <img src="static/img/4.jpg" alt="الگوی مناسب 4">
                       </div>
                       <div class="description">متن نیمه شفاف ، بدون زاویه و حاشیه و پس زمینه سفید</div>
                     </div>
@@ -509,7 +508,7 @@
                         <span>الگوی نادرست</span>
                       </div>
                       <div class="image">
-                        <img src="img/2.jpg" alt="الگوی نا مناسب 1">
+                        <img src="static/img/2.jpg" alt="الگوی نا مناسب 1">
                       </div>
                       <div class="description">زاویه زیاد به همراه حاشیه و المان های اضافه</div>
                     </div>
@@ -522,7 +521,7 @@
                         <span>الگوی نادرست</span>
                       </div>
                       <div class="image">
-                        <img src="img/3.jpg" alt="الگوی نا مناسب 2">
+                        <img src="static/img/3.jpg" alt="الگوی نا مناسب 2">
                       </div>
                       <div class="description">متن دست نویس برای نرم افزار غیر قابل تشخیص است</div>
                     </div>
@@ -535,7 +534,7 @@
                         <span>الگوی نادرست</span>
                       </div>
                       <div class="image">
-                        <img src="img/5.png" alt="الگوی نا مناسب 3">
+                        <img src="static/img/5.png" alt="الگوی نا مناسب 3">
                       </div>
                       <div class="description">تنها پس زمینه سفید قابل تشخیص است</div>
                     </div>
@@ -548,7 +547,7 @@
                         <span>الگوی نادرست</span>
                       </div>
                       <div class="image">
-                        <img src="img/7.jpg" alt="الگوی نا مناسب 4">
+                        <img src="static/img/7.jpg" alt="الگوی نا مناسب 4">
                       </div>
                       <div class="description">تصویر با حاشیه های محو و رنگ تیره با زاویه زیاد</div>
                     </div>
@@ -590,7 +589,7 @@
     </div>
   </div>
 
-  <script src="js/pic2text.min.js"></script>
+  <script src="static/js/pic2text.min.js"></script>
   <script>
     $.ajaxSetup({
       headers: {
@@ -621,7 +620,7 @@
   </script>
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-40760267-6"></script>
+  <script async src="static/https://www.googletagmanager.com/gtag/js?id=UA-40760267-6"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
 
