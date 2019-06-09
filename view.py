@@ -73,6 +73,7 @@ def signin():
     return redirect("/")
 
 @app.route('/signout', methods=["POST", "GET"])
+@login_required
 def signout():
     if request.method=="POST":
         logout_user()
@@ -93,6 +94,25 @@ def dashboard(user=''):
 
     return render_template("dashboard.html", user=user)
 
+@app.route('/change_password', methods=["POST", "GET"])
+@login_required
+def change_password():
+    print('*******  {}  ********'.format(inspect.stack()[0][3]))
+    if request.method=="POST":
+        form = request.form
+        oldPass, newPass, newPass_repeat = form.get('oldPass'), form.get('newPass'), form.get('newPass_repeat')
+        if oldPass and newPass and newPass_repeat:
+            if authenticate_user_by_id(current_user.id, oldPass):
+                if newPass == newPass_repeat:
+                    change_user_password(current_user.id, newPass)
+                else:
+                    flash('!تکرار رمز مطابق نیست')
+            else:
+                flash('!رمز قبلی اشتباه وارد شده است')
+        else:
+            flash('!تمام فیلدها را پر کنید')
+
+    return redirect(url_for('.dashboard'))
 
 # @app.route('/admin/newElec', methods=["POST", "GET"])
 # def admin_newElec():
