@@ -53,6 +53,20 @@ def add_user(first_name, last_name, email, password):
     conn.commit()
     conn.close()
 
+def check_email_uniqueness(email):
+
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    cursor.execute("select * from Users where \
+                        email='%s' and is_deleted=0 ;" % \
+                   (email))
+
+    user = cursor.fetchall()
+
+    if len(user) != 0:
+        return False
+
+    return True
 
 def authenticate_user(email, password):
     conn = sqlite3.connect(db_name)

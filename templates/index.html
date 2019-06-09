@@ -47,6 +47,16 @@
               <input class="ghost-input" type="password" name="password" placeholder="کلمه عبور">
             </div>
 
+              <div class="form-group text-right fa-1x">
+                  {% with error = get_flashed_messages(with_categories=true) %}
+                    {% if error %}
+                        {% set category, error = error[0] %}
+                        {% if category == 'signin' %}
+                            <span style="color: red; ">{{error}}</span>
+                        {% endif %}
+                    {% endif %}
+                  {% endwith %}
+                  </div>
             <button type="submit" class="btn btn-info shadowed btn-block authentication-btn">ورود به سایت</button>
 
           </form>
@@ -68,10 +78,6 @@
 
           <div class="title">عضویت در pic2text</div>
 
-
-
-
-
           <form method="POST" action="{{url_for('signup')}}" accept-charset="UTF-8"><input name="_token" type="hidden" value="txjnZ6XhYtDZhxO4APrOfwVhSf08mCHHzYbdLP53">
 
             <div class="form-group clearfix">
@@ -88,6 +94,17 @@
             <div class="form-group">
               <input class="ghost-input" name="password" type="password" placeholder="کلمه عبور">
             </div>
+
+              <div class="form-group text-right fa-1x">
+                  {% with error = get_flashed_messages(with_categories=true) %}
+                    {% if error %}
+                        {% set category, error = error[0] %}
+                        {% if category == 'signup' %}
+                            <span style="color: red; ">{{error}}</span>
+                        {% endif %}
+                    {% endif %}
+                  {% endwith %}
+                  </div>
 
             <button type="submit" class="btn btn-info shadowed btn-block authentication-btn">ایجاد حساب کاربری</button>
 
@@ -654,6 +671,27 @@
     gtag('config', 'UA-40760267-6');
   </script>
 
+  {% with error = get_flashed_messages(with_categories=true) %}
+    {% if error %}
+        {% set category, error = error[0] %}
+        {% if category == 'signup' %}
+          <script>
+              $('#registerModal').modal('show');
+          </script>
+        {% endif %}
+    {% endif %}
+  {% endwith %}
+
+  {% with error = get_flashed_messages(with_categories=true) %}
+    {% if error %}
+        {% set category, error = error[0] %}
+        {% if category == 'signin' %}
+          <script>
+              $('#loginModal').modal('show');
+          </script>
+        {% endif %}
+    {% endif %}
+  {% endwith %}
 
 </body>
 
