@@ -9,7 +9,7 @@
   <meta property="og:title" content="تبدیل عکس به متن و PDF به Word فارسی : pic2text">
   <meta property="og:description"
     content="پیک تو تکست نرم افزار تحت وب برای تبدیل عکس به متن و PDF به Word فارسی می باشد که با استفاده از الگوریتم های پیچیده یادگیری ماشین، بهترین و دقیق ترین تبدیل عکس به متن فارسی یا پی دی اف به ورد را انجام می دهد.">
-  <link rel="stylesheet" type="text/css" href = "{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
   <meta name="csrf-token" content="txjnZ6XhYtDZhxO4APrOfwVhSf08mCHHzYbdLP53">
   <link rel="shortcut icon" type="image/png" href="static/img/logo.png" />
   <link rel="icon" type="image/png" sizes="128x128" href="static/img/logo.png">
@@ -17,11 +17,13 @@
   <link rel="apple-touch-icon-precomposed" sizes="128x128" href="static/img/logo.png">
   <meta name="theme-color" content="#0075ff">
   <meta name="csrf-token" content="txjnZ6XhYtDZhxO4APrOfwVhSf08mCHHzYbdLP53">
-  <link rel="stylesheet" href = "{{ url_for('static', filename='css/all.css') }}" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-  <link rel="stylesheet" href = "{{ url_for('static', filename='css/font-awesome.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/all.css') }}" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
 
 </head>
+
 <body>
 
 
@@ -64,13 +66,13 @@
                 <input class="ghost-input" type="password" name="newPass_repeat" placeholder=" تکرار رمز جدید">
               </div>
               <div class="text-center">
-                  <div class="form-group text-right fa-1x">
+                <div class="form-group text-right fa-1x">
                   {% with error = get_flashed_messages() %}
-                    {% if error %}
-                      <span style="color: red; ">{{error[0]}}</span>
-                    {% endif %}
+                  {% if error %}
+                  <span style="color: red; ">{{error[0]}}</span>
+                  {% endif %}
                   {% endwith %}
-                  </div>
+                </div>
                 <input type="submit" value="ثبت" class="btn btn-primary" data-target="#passModal" data-toggle="modal">
               </div>
             </form>
@@ -109,7 +111,7 @@
                   </div>
                   <div class="info">
                     <div class="username">{{user.first_name}} {{user.last_name}}</div>
-<!--                    <div class="account">میزان اعتبار: 2 صفحه</div>-->
+                    <!--                    <div class="account">میزان اعتبار: 2 صفحه</div>-->
                   </div>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dLabel">
@@ -134,11 +136,11 @@
               <li><a href="#" data-target="#passModal" data-toggle="modal">تغییر رمز عبور</a></li>
               <li><a href="#help">راهنما</a></li>
               <li><a href="#" data-target="#contactModal" data-toggle="modal">تماس با ما</a></li>
-<!--              <li><a href="#prices"> تعرفه ها </a></li>-->
+              <!--              <li><a href="#prices"> تعرفه ها </a></li>-->
 
             </ul>
 
-<!--            <a href="#" data-target="#pricingModal" data-toggle="modal" class="remain-pages">میزان اعتبار : 2 صفحه</a>-->
+            <!--            <a href="#" data-target="#pricingModal" data-toggle="modal" class="remain-pages">میزان اعتبار : 2 صفحه</a>-->
 
           </nav>
         </div>
@@ -161,7 +163,7 @@
                     </div>
                     <hr>
 
-<!--                    <a href="#" data-toggle="modal" data-target="#pricingModal" data-dismiss="modal" class="btn btn-primary">افزایش اعتبار حساب کاربری</a>-->
+                    <!--                    <a href="#" data-toggle="modal" data-target="#pricingModal" data-dismiss="modal" class="btn btn-primary">افزایش اعتبار حساب کاربری</a>-->
                   </div>
                 </div>
               </div>
@@ -173,65 +175,65 @@
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 
-<!--                    <div class="title">تعرفه پکیج های حساب کاربری ویژه</div>-->
+                    <!--                    <div class="title">تعرفه پکیج های حساب کاربری ویژه</div>-->
 
-<!--                    <section class="pricing clearfix">-->
+                    <!--                    <section class="pricing clearfix">-->
 
-<!--                      <ul class="pricing-packages">-->
+                    <!--                      <ul class="pricing-packages">-->
 
-<!--                        <li class="big red">-->
+                    <!--                        <li class="big red">-->
 
-<!--                          <div class="price">-->
-<!--                            <span class="amount">۱۰,۰۰۰</span>-->
-<!--                            <span class="unit">تومان</span>-->
-<!--                          </div>-->
-<!--                          <div class="giving">-->
-<!--                            <span class="clicks">تبدیل ۱۵ عکس</span>-->
-<!--                            <span class="impression">هر صفحه pdf یک عکس</span>-->
-<!--                          </div>-->
-<!--                          <div class="extras">-->
-<!--                            <span>* دریافت فایل متنی text</span>-->
-<!--                            <span>* دریافت فایل word</span>-->
-<!--                          </div>-->
-<!--                          <a href="" class="go">خرید پکیج و ارتقاء به حساب ویژه</a>-->
-<!--                        </li>-->
+                    <!--                          <div class="price">-->
+                    <!--                            <span class="amount">۱۰,۰۰۰</span>-->
+                    <!--                            <span class="unit">تومان</span>-->
+                    <!--                          </div>-->
+                    <!--                          <div class="giving">-->
+                    <!--                            <span class="clicks">تبدیل ۱۵ عکس</span>-->
+                    <!--                            <span class="impression">هر صفحه pdf یک عکس</span>-->
+                    <!--                          </div>-->
+                    <!--                          <div class="extras">-->
+                    <!--                            <span>* دریافت فایل متنی text</span>-->
+                    <!--                            <span>* دریافت فایل word</span>-->
+                    <!--                          </div>-->
+                    <!--                          <a href="" class="go">خرید پکیج و ارتقاء به حساب ویژه</a>-->
+                    <!--                        </li>-->
 
-<!--                        <li class="big green">-->
-<!--                          <span class="gift"><strong>۱۵٪</strong> شارژ بیشتر</span>-->
-<!--                          <div class="price">-->
-<!--                            <span class="amount">۲۰,۰۰۰</span>-->
-<!--                            <span class="unit">تومان</span>-->
-<!--                          </div>-->
-<!--                          <div class="giving">-->
-<!--                            <span class="clicks">تبدیل ۳۵ عکس</span>-->
-<!--                            <span class="impression">هر صفحه pdf یک عکس</span>-->
-<!--                          </div>-->
-<!--                          <div class="extras">-->
-<!--                            <span>* دریافت فایل متنی text</span>-->
-<!--                            <span>* دریافت فایل word</span>-->
-<!--                          </div>-->
-<!--                          <a href="" class="go">خرید پکیج و ارتقاء به حساب ویژه</a>-->
-<!--                        </li>-->
+                    <!--                        <li class="big green">-->
+                    <!--                          <span class="gift"><strong>۱۵٪</strong> شارژ بیشتر</span>-->
+                    <!--                          <div class="price">-->
+                    <!--                            <span class="amount">۲۰,۰۰۰</span>-->
+                    <!--                            <span class="unit">تومان</span>-->
+                    <!--                          </div>-->
+                    <!--                          <div class="giving">-->
+                    <!--                            <span class="clicks">تبدیل ۳۵ عکس</span>-->
+                    <!--                            <span class="impression">هر صفحه pdf یک عکس</span>-->
+                    <!--                          </div>-->
+                    <!--                          <div class="extras">-->
+                    <!--                            <span>* دریافت فایل متنی text</span>-->
+                    <!--                            <span>* دریافت فایل word</span>-->
+                    <!--                          </div>-->
+                    <!--                          <a href="" class="go">خرید پکیج و ارتقاء به حساب ویژه</a>-->
+                    <!--                        </li>-->
 
-<!--                        <li class="big violet">-->
-<!--                          <span class="gift"><strong>۲۵٪</strong> شارژ بیشتر</span>-->
-<!--                          <div class="price">-->
-<!--                            <span class="amount">۴۰,۰۰۰</span>-->
-<!--                            <span class="unit">تومان</span>-->
-<!--                          </div>-->
-<!--                          <div class="giving">-->
-<!--                            <span class="clicks">تبدیل ۸۰ عکس</span>-->
-<!--                            <span class="impression">هر صفحه pdf یک عکس</span>-->
-<!--                          </div>-->
-<!--                          <div class="extras">-->
-<!--                            <span>* دریافت فایل متنی text</span>-->
-<!--                            <span>* دریافت فایل word</span>-->
-<!--                          </div>-->
-<!--                          <a href="" class="go">خرید پکیج و ارتقاء به حساب ویژه</a>-->
-<!--                        </li>-->
+                    <!--                        <li class="big violet">-->
+                    <!--                          <span class="gift"><strong>۲۵٪</strong> شارژ بیشتر</span>-->
+                    <!--                          <div class="price">-->
+                    <!--                            <span class="amount">۴۰,۰۰۰</span>-->
+                    <!--                            <span class="unit">تومان</span>-->
+                    <!--                          </div>-->
+                    <!--                          <div class="giving">-->
+                    <!--                            <span class="clicks">تبدیل ۸۰ عکس</span>-->
+                    <!--                            <span class="impression">هر صفحه pdf یک عکس</span>-->
+                    <!--                          </div>-->
+                    <!--                          <div class="extras">-->
+                    <!--                            <span>* دریافت فایل متنی text</span>-->
+                    <!--                            <span>* دریافت فایل word</span>-->
+                    <!--                          </div>-->
+                    <!--                          <a href="" class="go">خرید پکیج و ارتقاء به حساب ویژه</a>-->
+                    <!--                        </li>-->
 
-<!--                      </ul>-->
-<!--                    </section>-->
+                    <!--                      </ul>-->
+                    <!--                    </section>-->
 
                   </div>
                 </div>
@@ -246,22 +248,19 @@
                   <div class="step-title">گام اول : بارگذاری فایل PDF یا عکس</div>
                   <div class="step-body" :class="{ 'disabled': step != 1, 'btn-play-pulse': step == 1 }" @click="getFile()">
 
-                    <div class="step-wrapper">
+                    <div class="step-wrapper" id="uploadfile">
 
                       <div class="upload">
 
-                        <input type="file" class="ghost-file" ref="ghostFileInput">
-
-                        <div class="loading-absolute" style="display: none" v-show="uploading"><span class="fa fa-spin"></span></div>
-
-
                         <i class="fa fa-upload"></i>
-                        <div class="upload-description">
-                          <div>فرمت های مناسب</div>
-                          <div> PDF - JPG - PNG - BMP</div>
-                        </div>
 
-                        <button class="btn btn-primary">انتخاب فایل</button>
+                        <form method="POST" action="{{url_for('upload')}}" enctype="multipart/form-data">
+                          <br>
+                          <div class="form-group files">
+                            <input type="file"  name ="file" class="form-control" accept=".png, .jpeg, .jpeg, .bmp, .pdf">
+                          </div>
+                          <button type="submit" class="btn btn-primary">ارسال فایل</button>
+                        </form>
 
                       </div>
 
@@ -293,7 +292,7 @@
                           <span> درحال پردازش صفحه {{ current_page }} از {{ total_pages }} </span>
                         </span>
                         <div class="progress" dir="rtl">
-                          <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" >
+                          <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                             %</div>
                         </div>
                       </div>
@@ -320,7 +319,7 @@
                         <button @click="downloadWord" class="btn btn-primary btn-word">دریافت word</button>
                         <button @click="downloadText" class="btn btn-primary btn-txt">دریافت text</button>
 
-<!--                        <a class="register" href="#" data-toggle="modal" data-target="#pricingModal">افزایش میزان اعتبار حساب کاربری</a>-->
+                        <!--                        <a class="register" href="#" data-toggle="modal" data-target="#pricingModal">افزایش میزان اعتبار حساب کاربری</a>-->
 
                       </div>
                     </div>
@@ -374,75 +373,75 @@
 
         </section>
 
-<!--        <section class="pricing clearfix" id="prices">-->
+        <!--        <section class="pricing clearfix" id="prices">-->
 
-<!--          <div class="container">-->
-<!--            <div class="row">-->
-<!--              <div class="col-sm-10 col-sm-offset-1">-->
-<!--                <h1 class="section-title">حساب کاربری ویژه</h1>-->
-<!--                <div class="section-slogan">حساب کاربری خود را ایجاد کرده، به نسخه ویژه ارتقاء دهید، عکس یا PDF را به طور کامل به متن تبدیل نمایید!</div>-->
-<!--                <div class="section-description">با عضویت در نرم افزار تحت وب pic2text شما می توانید ۳ صفحه را به صورت آزمایشی از عکس به متن یا PDF به Word تبدیل نمایید. برای تبدیل کامل عکس به متن یا پی دی اف به ورد، حساب کاربری خود را ایجاد نموده-->
-<!--                  سپس بر اساس پکیج های پیشنهادی زیر و متناسب با نیاز خود، حساب کاربری خود را به نسخه ویژه ارتقاء ‌دهید.</div>-->
-<!--              </div>-->
+        <!--          <div class="container">-->
+        <!--            <div class="row">-->
+        <!--              <div class="col-sm-10 col-sm-offset-1">-->
+        <!--                <h1 class="section-title">حساب کاربری ویژه</h1>-->
+        <!--                <div class="section-slogan">حساب کاربری خود را ایجاد کرده، به نسخه ویژه ارتقاء دهید، عکس یا PDF را به طور کامل به متن تبدیل نمایید!</div>-->
+        <!--                <div class="section-description">با عضویت در نرم افزار تحت وب pic2text شما می توانید ۳ صفحه را به صورت آزمایشی از عکس به متن یا PDF به Word تبدیل نمایید. برای تبدیل کامل عکس به متن یا پی دی اف به ورد، حساب کاربری خود را ایجاد نموده-->
+        <!--                  سپس بر اساس پکیج های پیشنهادی زیر و متناسب با نیاز خود، حساب کاربری خود را به نسخه ویژه ارتقاء ‌دهید.</div>-->
+        <!--              </div>-->
 
-<!--              <ul class="pricing-packages">-->
+        <!--              <ul class="pricing-packages">-->
 
-<!--                <li class="big red">-->
+        <!--                <li class="big red">-->
 
-<!--                  <div class="price">-->
-<!--                    <span class="amount">۱۰,۰۰۰</span>-->
-<!--                    <span class="unit">تومان</span>-->
-<!--                  </div>-->
-<!--                  <div class="giving">-->
-<!--                    <span class="clicks">تبدیل ۱۵ عکس</span>-->
-<!--                    <span class="impression">هر صفحه pdf یک عکس</span>-->
-<!--                  </div>-->
-<!--                  <div class="extras">-->
-<!--                    <span>* دریافت فایل متنی text</span>-->
-<!--                    <span>* دریافت فایل word</span>-->
-<!--                  </div>-->
-<!--                  <a href="" class="go">خرید پکیج و ارتقاء به حساب ویژه</a>-->
-<!--                </li>-->
+        <!--                  <div class="price">-->
+        <!--                    <span class="amount">۱۰,۰۰۰</span>-->
+        <!--                    <span class="unit">تومان</span>-->
+        <!--                  </div>-->
+        <!--                  <div class="giving">-->
+        <!--                    <span class="clicks">تبدیل ۱۵ عکس</span>-->
+        <!--                    <span class="impression">هر صفحه pdf یک عکس</span>-->
+        <!--                  </div>-->
+        <!--                  <div class="extras">-->
+        <!--                    <span>* دریافت فایل متنی text</span>-->
+        <!--                    <span>* دریافت فایل word</span>-->
+        <!--                  </div>-->
+        <!--                  <a href="" class="go">خرید پکیج و ارتقاء به حساب ویژه</a>-->
+        <!--                </li>-->
 
-<!--                <li class="big green">-->
-<!--                  <span class="gift"><strong>۱۵٪</strong> شارژ بیشتر</span>-->
-<!--                  <div class="price">-->
-<!--                    <span class="amount">۲۰,۰۰۰</span>-->
-<!--                    <span class="unit">تومان</span>-->
-<!--                  </div>-->
-<!--                  <div class="giving">-->
-<!--                    <span class="clicks">تبدیل ۳۵ عکس</span>-->
-<!--                    <span class="impression">هر صفحه pdf یک عکس</span>-->
-<!--                  </div>-->
-<!--                  <div class="extras">-->
-<!--                    <span>* دریافت فایل متنی text</span>-->
-<!--                    <span>* دریافت فایل word</span>-->
-<!--                  </div>-->
-<!--                  <a href="" class="go">خرید پکیج و ارتقاء به حساب ویژه</a>-->
-<!--                </li>-->
+        <!--                <li class="big green">-->
+        <!--                  <span class="gift"><strong>۱۵٪</strong> شارژ بیشتر</span>-->
+        <!--                  <div class="price">-->
+        <!--                    <span class="amount">۲۰,۰۰۰</span>-->
+        <!--                    <span class="unit">تومان</span>-->
+        <!--                  </div>-->
+        <!--                  <div class="giving">-->
+        <!--                    <span class="clicks">تبدیل ۳۵ عکس</span>-->
+        <!--                    <span class="impression">هر صفحه pdf یک عکس</span>-->
+        <!--                  </div>-->
+        <!--                  <div class="extras">-->
+        <!--                    <span>* دریافت فایل متنی text</span>-->
+        <!--                    <span>* دریافت فایل word</span>-->
+        <!--                  </div>-->
+        <!--                  <a href="" class="go">خرید پکیج و ارتقاء به حساب ویژه</a>-->
+        <!--                </li>-->
 
-<!--                <li class="big violet">-->
-<!--                  <span class="gift"><strong>۲۵٪</strong> شارژ بیشتر</span>-->
-<!--                  <div class="price">-->
-<!--                    <span class="amount">۴۰,۰۰۰</span>-->
-<!--                    <span class="unit">تومان</span>-->
-<!--                  </div>-->
-<!--                  <div class="giving">-->
-<!--                    <span class="clicks">تبدیل ۸۰ عکس</span>-->
-<!--                    <span class="impression">هر صفحه pdf یک عکس</span>-->
-<!--                  </div>-->
-<!--                  <div class="extras">-->
-<!--                    <span>* دریافت فایل متنی text</span>-->
-<!--                    <span>* دریافت فایل word</span>-->
-<!--                  </div>-->
-<!--                  <a href="" class="go">خرید پکیج و ارتقاء به حساب ویژه</a>-->
-<!--                </li>-->
+        <!--                <li class="big violet">-->
+        <!--                  <span class="gift"><strong>۲۵٪</strong> شارژ بیشتر</span>-->
+        <!--                  <div class="price">-->
+        <!--                    <span class="amount">۴۰,۰۰۰</span>-->
+        <!--                    <span class="unit">تومان</span>-->
+        <!--                  </div>-->
+        <!--                  <div class="giving">-->
+        <!--                    <span class="clicks">تبدیل ۸۰ عکس</span>-->
+        <!--                    <span class="impression">هر صفحه pdf یک عکس</span>-->
+        <!--                  </div>-->
+        <!--                  <div class="extras">-->
+        <!--                    <span>* دریافت فایل متنی text</span>-->
+        <!--                    <span>* دریافت فایل word</span>-->
+        <!--                  </div>-->
+        <!--                  <a href="" class="go">خرید پکیج و ارتقاء به حساب ویژه</a>-->
+        <!--                </li>-->
 
-<!--              </ul>-->
-<!--            </div>-->
-<!--          </div>-->
+        <!--              </ul>-->
+        <!--            </div>-->
+        <!--          </div>-->
 
-<!--        </section>-->
+        <!--        </section>-->
 
         <section class="help" id="help">
 
@@ -640,11 +639,11 @@
   </script>
 
   {% with error = get_flashed_messages() %}
-    {% if error %}
-      <script>
-          $('#passModal').modal('show');
-      </script>
-    {% endif %}
+  {% if error %}
+  <script>
+    $('#passModal').modal('show');
+  </script>
+  {% endif %}
   {% endwith %}
 
 
