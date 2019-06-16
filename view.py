@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
+import time
+
 from flask import Flask, render_template, flash
 from flask import redirect
 from flask import request
@@ -10,6 +13,11 @@ import inspect
 import re
 from flask_login import LoginManager, UserMixin, login_required, \
     login_user, logout_user, current_user
+import socket
+
+host = 'localhost'
+port = 1027
+server_address = (host, port)
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'bmp'}
@@ -112,22 +120,6 @@ def dashboard(user=''):
     return render_template("dashboard.html", user=user)
 
 
-@app.route('/upload', methods=["POST", "GET"])
-@login_required
-def upload(user=''):
-    print('*******  {}  ********'.format(inspect.stack()[0][3]))
-    if request.method == "POST":
-        file = request.files['file']
-
-        upload_path = os.path.join(app.config['UPLOAD_FOLDER'], current_user.id)
-        if not os.path.exists(upload_path):
-            os.makedirs(upload_path)
-
-        file.save(os.path.join(upload_path, file.filename))
-
-    return render_template("dashboard.html", user=user)
-
-
 @app.route('/change_password', methods=["POST", "GET"])
 @login_required
 def change_password():
@@ -140,11 +132,43 @@ def change_password():
                 if newPass == newPass_repeat:
                     change_user_password(current_user.id, newPass)
                 else:
-                    flash('!تکرار رمز مطابق نیست')
+                    flash('!تکرار رمز مطابق نیست', category='pass')
             else:
-                flash('!رمز قبلی اشتباه وارد شده است')
+                flash('!رمز قبلی اشتباه وارد شده است', category='pass')
         else:
-            flash('!تمام فیلدها را پر کنید')
+            flash('!تمام فیلدها را پر کنید', category='pass')
+
+    return redirect(url_for('.dashboard'))
+
+
+@app.route('/upload', methods=["POST", "GET"])
+@login_required
+def upload():
+    print('*******  {}  ********'.format(inspect.stack()[0][3]))
+    if request.method == "POST":
+
+        file = request.files['file']
+        filename = file.filename
+        print(filename)
+
+        history_path = os.path.join(app.config['UPLOAD_FOLDER'], current_user.id)
+        if not os.path.exists(history_path):
+            os.makedirs(history_path)
+
+        record_id = get_record_id(history_path)
+        record_path = os.path.join(history_path, record_id)
+        os.makedirs(record_path)
+
+        file.save(os.path.join(record_path, filename))
+
+        ocr_request(record_path, filename)
+
+        _, file_type = os.path.splitext(filename)
+        out_file = os.path.join(record_path, 'out_text.txt')
+
+        add_record(current_user, filename, file_type, os.path.join(record_path, filename), out_file)
+
+        flash('step3', category='step3')
 
     return redirect(url_for('.dashboard'))
 
@@ -158,6 +182,56 @@ def is_valid_email(email):
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def ocr_request(record_path, filename):
+    global sock
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect(server_address)
+    print('connected to {}'.format(server_address))
+
+    sock.send(filename.encode())
+
+    data = sock.recv(1024)
+    print('client received', repr(data))
+
+    f = open(os.path.join(record_path, filename), 'rb')
+    l = f.read(1024)
+    while l:
+        sock.send(l)
+        # print('Sent ', repr(l))
+        l = f.read(1024)
+    f.close()
+
+    sock.close()
+    print('Done sending')
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect(server_address)
+
+    sock.send(b'wait for receive from server')
+
+    with open(os.path.join(record_path, 'out_text.txt'), 'wb') as f:
+        print('file opened')
+        while True:
+            print('receiving data...')
+            data = sock.recv(1024)
+            # print('data=%s', data)
+            if not data:
+                break
+            # write data to a file
+            f.write(data)
+
+    f.close()
+    print('Successfully get the file')
+    sock.close()
+    print('connection closed')
+
+
+def get_record_id(path):
+    folders = 0
+    for _, dirnames, _ in os.walk(path):
+        folders += len(dirnames)
+    return str(folders + 1)
 
 
 if __name__ == "__main__":

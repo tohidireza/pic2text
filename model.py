@@ -53,8 +53,8 @@ def add_user(first_name, last_name, email, password):
     conn.commit()
     conn.close()
 
-def check_email_uniqueness(email):
 
+def check_email_uniqueness(email):
     conn = sqlite3.connect(db_name)
     cursor = conn.cursor()
     cursor.execute("select * from Users where \
@@ -68,6 +68,7 @@ def check_email_uniqueness(email):
 
     return True
 
+
 def authenticate_user(email, password):
     conn = sqlite3.connect(db_name)
     cursor = conn.cursor()
@@ -78,6 +79,7 @@ def authenticate_user(email, password):
     user = cursor.fetchall()
     return len(user) != 0
 
+
 def authenticate_user_by_id(id, password):
     conn = sqlite3.connect(db_name)
     cursor = conn.cursor()
@@ -87,6 +89,7 @@ def authenticate_user_by_id(id, password):
 
     user = cursor.fetchall()
     return len(user) != 0
+
 
 def get_user_id(email, password):
     conn = sqlite3.connect(db_name)
@@ -121,3 +124,11 @@ def change_user_password(id, newPassword):
     conn.commit()
     conn.close()
 
+
+def add_record(user_id, file_name, file_type, src_file, dst_file):
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    cursor.execute(" INSERT INTO History (user_id, file_name, file_type, src_file, dst_file, status) \
+                    VALUES ('{}','{}','{}','{}','{}','{}') ".format(user_id, file_name, file_type, src_file, dst_file,'پردازش و تبدیل موفق'))
+    conn.commit()
+    conn.close()

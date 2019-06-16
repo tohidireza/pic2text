@@ -67,10 +67,13 @@
               </div>
               <div class="text-center">
                 <div class="form-group text-right fa-1x">
-                  {% with error = get_flashed_messages() %}
-                  {% if error %}
-                  <span style="color: red; ">{{error[0]}}</span>
-                  {% endif %}
+                  {% with error = get_flashed_messages(with_categories=true) %}
+                    {% if error %}
+                        {% set category, error = error[0] %}
+                        {% if category == 'pass' %}
+                            <span style="color: red; ">{{error}}</span>
+                        {% endif %}
+                    {% endif %}
                   {% endwith %}
                 </div>
                 <input type="submit" value="ثبت" class="btn btn-primary" data-target="#passModal" data-toggle="modal">
@@ -259,7 +262,7 @@
                           <div class="form-group files">
                             <input type="file"  name ="file" class="form-control" accept=".png, .jpeg, .jpeg, .bmp, .pdf">
                           </div>
-                          <button type="submit" class="btn btn-primary">ارسال فایل</button>
+                          <input type="submit" class="btn btn-primary" value="ارسال فایل"  onclick="foo();">
                         </form>
 
                       </div>
@@ -276,7 +279,10 @@
 
                 <div class="step-1 step">
                   <div class="step-title">گام دوم : تحلیل و پردازش فایل</div>
-                  <div class="step-body" :class="{ 'disabled': step != 2, 'btn-play-pulse': step == 2 }">
+
+<!--                  step2 off mode-->
+
+                  <div class="step-body" id="step2_off" :class="{ 'disabled': step != 2, 'btn-play-pulse': step == 2 }">
                     <div class="step-wrapper">
                       <img class="small" v-if="step == 2" src="static/img/proccessing.gif">
                       <img v-else src="static/img/proccessing.png">
@@ -301,7 +307,69 @@
                     <span v-if="step == 2" class="btn-play-pulse-sm"></span>
                     <span v-if="step == 2" class="btn-play-pulse-lg"></span>
                   </div>
-                </div>
+
+<!--                  step2 on mode-->
+
+                   <div class="step-body" id="step2_on" :class="{ 'enabled': step != 2, 'btn-play-pulse': step == 2 }">
+                    <div class="step-wrapper">
+                      <img class="small"  src="static/img/proccessing.gif">
+                      <img v-else src="static/img/proccessing.png">
+
+                      <div class="processing-loading"  ref="processingLoading">
+                        <i class="fa fa-cog fa-spin fa-lg"></i>
+                        <span>در حال پردازش فایل...</span>
+                      </div>
+
+                      <div class="progress-pdf text-center">
+                        <span class="percentage">
+                          <i class="fa fa-cog fa-lg fa-spin"></i>
+                          <span> درحال پردازش </span>
+                        </span>
+<!--                        <div class="progress" dir="rtl">-->
+<!--                          <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">-->
+<!--                            </div>-->
+                        </div>
+                      </div>
+
+                    </div>
+
+
+<!--                  step2 done mode-->
+
+                  <div class="step-body" id="step2_done" :class="{ 'enabled': step != 2, 'btn-play-pulse': step == 2 }">
+                    <div class="step-wrapper">
+                      <img class="small" v-if="step == 2" src="static/img/proccessing.gif">
+                      <img v-else src="static/img/proccessing.png">
+
+                      <div class="processing-loading" v-if="total_pages == 0" ref="processingLoading">
+                        <i class="fa fa-cog fa-spin fa-lg"></i>
+                        <span>در حال پردازش فایل...</span>
+                      </div>
+
+                      <div class="progress-pdf text-center" v-if="total_pages > 0 && step == 2">
+                        <span class="percentage">
+                          <i class="fa fa-cog fa-lg fa-spin"></i>
+                          <span> درحال پردازش صفحه {{ current_page }} از {{ total_pages }} </span>
+                        </span>
+                        <div class="progress" dir="rtl">
+                          <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                            %</div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <span v-if="step == 2" class="btn-play-pulse-sm"></span>
+                    <span v-if="step == 2" class="btn-play-pulse-lg"></span>
+                  </div>
+
+
+
+
+                    <span v-if="step == 2" class="btn-play-pulse-sm"></span>
+                    <span v-if="step == 2" class="btn-play-pulse-lg"></span>
+                 </div>
+
+
 
                 <div class="step-seprator" :class="{ 'disabled': step != 3}">
                   <div class="dash"></div>
@@ -309,7 +377,10 @@
 
                 <div class="step-1 step">
                   <div class="step-title">گام سوم : دریافت فایل word یا متن</div>
-                  <div class="step-body" :class="{ 'disabled': step != 3, 'btn-play-pulse': step == 3 }">
+
+                  <!--                  step3 off mode-->
+
+                  <div class="step-body" id="step3_off" :class="{ 'disabled': step != 3, 'btn-play-pulse': step == 3 }">
                     <div class="step-wrapper">
                       <div class="download">
 
@@ -326,12 +397,35 @@
                     <span v-if="step == 3" class="btn-play-pulse-sm"></span>
                     <span v-if="step == 3" class="btn-play-pulse-lg"></span>
                   </div>
+
+
+                  <!--                  step3 off mode-->
+
+                  <div class="step-body" id="step3_on" :class="{ 'enabled': step != 3, 'btn-play-pulse': step == 3 }">
+                    <div class="step-wrapper">
+                      <div class="download">
+
+                        <i class="fa fa-download"></i>
+                        <div class="download-description">نسخه مورد نظر فایل تبدیل شده را دریافت نمایید.</div>
+
+                        <button @click="downloadWord" class="btn btn-primary btn-word">دریافت word</button>
+                        <button @click="downloadText" class="btn btn-primary btn-txt">دریافت text</button>
+
+                        <!--                        <a class="register" href="#" data-toggle="modal" data-target="#pricingModal">افزایش میزان اعتبار حساب کاربری</a>-->
+
+                      </div>
+                    </div>
+                    <span  class="btn-play-pulse-sm"></span>
+                    <span  class="btn-play-pulse-lg"></span>
+                  </div>
+
+
                 </div>
 
               </div>
 
               <div class="text-center">
-                <button class="btn btn-default btn-restart" style="display: none" v-show="true" v-if="step == 3" @click="restartOcr()">شروع مجدد و انتخاب فایل جدید</button>
+                <button class="btn btn-default btn-restart" id="restart_bt" style="display: none" v-show="true"  @click="restartOcr()">شروع مجدد و انتخاب فایل جدید</button>
               </div>
 
             </div>
@@ -638,13 +732,40 @@
     gtag('config', 'UA-40760267-6');
   </script>
 
-  {% with error = get_flashed_messages() %}
-  {% if error %}
-  <script>
-    $('#passModal').modal('show');
+   <script>
+      $('#step2_on').hide();
+      $('#step3_on').hide();
+      $('#restart_bt').hide();
+      $('#step2_done').hide();
   </script>
-  {% endif %}
+
+  {% with error = get_flashed_messages(with_categories=true) %}
+    {% if error %}
+        {% set category, error = error[0] %}
+        {% if category == 'pass' %}
+          <script>
+              $('#passModal').modal('show');
+          </script>
+        {% elif category == 'step3' %}
+           <script>
+              $('#step2_on').hide();
+              $('#step2_off').hide();
+              $('#step2_done').show();
+              $('#step3_off').hide();
+              $('#step3_on').show();
+              $('#restart_bt').show();
+          </script>
+        {% endif %}
+    {% endif %}
   {% endwith %}
+
+<script>
+function foo() {
+              $('#step2_off').hide();
+              $('#step2_on').show();
+   return true;
+}
+</script>
 
 
 </body>

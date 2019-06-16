@@ -2,3 +2,10 @@ venv
 __pycache__
 pic2text_db
 test.py
+.idea
+uploads
+ocr/file.pdf
+out_text.txt
+page_1.jpg
+page_2.jpg
+page_3.jpg
