@@ -132,3 +132,25 @@ def add_record(user_id, file_name, file_type, src_file, dst_file):
                     VALUES ('{}','{}','{}','{}','{}','{}') ".format(user_id, file_name, file_type, src_file, dst_file,'پردازش و تبدیل موفق'))
     conn.commit()
     conn.close()
+
+def get_last_out_text(user_id):
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    cursor.execute("select dst_file from History where \
+                       user_id='%s' and is_deleted=0 ;" % \
+                   (user_id))
+
+    records = cursor.fetchall()
+
+    return records[-1][0]
+
+def get_history(user_id):
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    cursor.execute("select file_name, file_type from History where \
+                       user_id='%s' and is_deleted=0 ;" % \
+                   (user_id))
+
+    records = cursor.fetchall()
+
+    return records

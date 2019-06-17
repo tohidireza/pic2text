@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 import time
 
-from flask import Flask, render_template, flash
+from flask import Flask, render_template, flash, send_file
 from flask import redirect
 from flask import request
 from flask import url_for
@@ -166,11 +166,41 @@ def upload():
         _, file_type = os.path.splitext(filename)
         out_file = os.path.join(record_path, 'out_text.txt')
 
-        add_record(current_user, filename, file_type, os.path.join(record_path, filename), out_file)
+        add_record(current_user.id, filename, file_type, os.path.join(record_path, filename), out_file)
 
         flash('step3', category='step3')
 
     return redirect(url_for('.dashboard'))
+
+@app.route('/download', methods=["POST", "GET"])
+@login_required
+def download():
+    print('*******  {}  ********'.format(inspect.stack()[0][3]))
+    if request.method == "POST":
+
+        out_text_path = get_last_out_text(current_user.id)
+
+        return send_file(out_text_path,
+                         attachment_filename='out_text.txt')
+
+    return redirect(url_for('.dashboard'))
+
+
+@app.route('/history', methods=["POST", "GET"])
+@login_required
+def history():
+    print('*******  {}  ********'.format(inspect.stack()[0][3]))
+    if request.method == "POST":
+        pass
+
+    if request.method == "GET":
+        id = current_user.id
+        user = get_user_by_id(id)
+
+        results = get_history(current_user.id)
+
+
+    return render_template("history.html", user=user, results=results)
 
 
 def is_valid_email(email):

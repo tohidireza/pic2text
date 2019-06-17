@@ -9,16 +9,18 @@
   <meta property="og:title" content="تبدیل عکس به متن و PDF به Word فارسی : pic2text">
   <meta property="og:description"
     content="پیک تو تکست نرم افزار تحت وب برای تبدیل عکس به متن و PDF به Word فارسی می باشد که با استفاده از الگوریتم های پیچیده یادگیری ماشین، بهترین و دقیق ترین تبدیل عکس به متن فارسی یا پی دی اف به ورد را انجام می دهد.">
-  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
   <meta name="csrf-token" content="txjnZ6XhYtDZhxO4APrOfwVhSf08mCHHzYbdLP53">
-  <link rel="shortcut icon" type="image/png" href="img/logo.png" />
-  <link rel="icon" type="image/png" sizes="128x128" href="img/logo.png">
+  <link rel="shortcut icon" type="image/png" href="static/img/logo.png" />
+  <link rel="icon" type="image/png" sizes="128x128" href="static/img/logo.png">
   <meta name="msapplication-TileImage" content="img/logo.png">
-  <link rel="apple-touch-icon-precomposed" sizes="128x128" href="img/logo.png">
+  <link rel="apple-touch-icon-precomposed" sizes="128x128" href="static/img/logo.png">
   <meta name="theme-color" content="#0075ff">
   <meta name="csrf-token" content="txjnZ6XhYtDZhxO4APrOfwVhSf08mCHHzYbdLP53">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/all.css') }}" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
 
 
 </head>
@@ -58,7 +60,7 @@
               <span class="icon-bar"></span>
             </button>
             <a href="/" class="navbar-brand">
-              <img src="img/logo.png">
+              <img src="static/img/logo.png">
               <div class="name">
                 <div class="en">pic2text</div>
                 <div class="slogan">نرم افزار پردازش عکس</div>
@@ -71,16 +73,15 @@
               <li class="dropdown profile-dropdown">
                 <a href="#" class="user-profile clearfix" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <div class="image">
-                    <img src="img/avatar.svg">
+                    <img src="static/img/avatar.svg">
                   </div>
                   <div class="info">
-                    <div class="username">آزاده علیزاده</div>
-                    <div class="account">میزان اعتبار: 2 صفحه</div>
+                    <div class="username">{{user.first_name}} {{user.last_name}}</div>
                   </div>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dLabel">
                   <li>
-                    <a target="_blank" href="history.html">
+                    <a href="{{url_for('history')}}">
                       <i class="fa fa-list fa-lg"></i>
                       <span>سوابق تبدیل ها</span>
                     </a>
@@ -90,7 +91,7 @@
                       <i class="fa fa-power-off fa-lg"></i>
                       <span>خروج</span>
                     </a>
-                    <form id="logout-form" action="" method="POST" style="display: none;"><input type="hidden" name="_token" value="txjnZ6XhYtDZhxO4APrOfwVhSf08mCHHzYbdLP53"></form>
+                    <form id="logout-form" action="{{url_for('signout')}}" method="POST" style="display: none;"><input type="hidden" name="_token" value="txjnZ6XhYtDZhxO4APrOfwVhSf08mCHHzYbdLP53"></form>
                   </li>
                 </ul>
               </li>
@@ -101,7 +102,7 @@
 
             </ul>
 
-            <a href="#" data-target="#pricingModal" data-toggle="modal" class="remain-pages">میزان اعتبار : 2 صفحه</a>
+<!--            <a href="#" data-target="#pricingModal" data-toggle="modal" class="remain-pages">میزان اعتبار : 2 صفحه</a>-->
 
           </nav>
         </div>
@@ -122,6 +123,15 @@
 
                 <hr>
 
+<!--                <table class="head-line clearfix">-->
+<!--                  <tr>-->
+<!--                    <th class="title">عنوان فایل</th>-->
+<!--                    <th class="type">نوع فایل</th>-->
+<!--                    <th class="status">وضعیت تبدیل</th>-->
+<!--                    <th class="actions">دریافت فایل تبدیل شده</th>-->
+<!--                  </tr>-->
+
+
                 <div class="head-line clearfix">
                   <div class="title">عنوان فایل</div>
                   <div class="type">نوع فایل</div>
@@ -129,14 +139,36 @@
                   <div class="actions">دریافت فایل تبدیل شده</div>
                 </div>
 
+                <hr>
+
+
+
                 <div class="pdf-page clearfix">
-                  <div class="title">Image to Text Website.pdf</div>
-                  <div class="type">pdf</div>
+                {% for result in results %}
+
+<!--                  <hr>-->
+
+                  <div class="title">{{result[0]}}</div>
+                  <div class="type">{{result[1]}}</div>
                   <div class="status"><span class="label label-success">پردازش و تبدیل موفق</span></div>
                   <div class="actions">
-                    <a target="_blank" href="" class="btn btn-primary">دانلود فایل word</a>
                     <a target="_blank" href="" class="btn btn-primary">دانلود فایل text</a>
+                    <hr>
                   </div>
+
+
+
+                 {% endfor %}
+
+<!--                </div>-->
+<!--                  <div class="pdf-page clearfix">-->
+<!--                  <div class="title">Image to Text Website.pdf</div>-->
+<!--                  <div class="type">pdf</div>-->
+<!--                  <div class="status"><span class="label label-success">پردازش و تبدیل موفق</span></div>-->
+<!--                  <div class="actions">-->
+<!--                    <a target="_blank" href="" class="btn btn-primary">دانلود فایل text</a>-->
+<!--                  </div>-->
+
                 </div>
 
               </div>
@@ -173,7 +205,7 @@
     </div>
   </div>
 
-  <script src="js/pic2text.min.js"></script>
+  <script src="static/js/pic2text.min.js"></script>
   <script>
     $.ajaxSetup({
       headers: {
